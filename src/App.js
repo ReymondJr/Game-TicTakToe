@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import confetti from 'canvas-confetti';
 import './App.css';
 import { Square } from './Componets/Square';
-import { Turns} from './constant';
+import { Turns } from './constant';
 import { chechWinner } from './Componets/Checkwinner';
-import {Winner} from "./Componets/Winner.jsx"
+import { Winner } from "./Componets/Winner.jsx"
 import { checkEndGame } from './Componets/Winner.jsx';
 
 function App() {
@@ -16,10 +16,10 @@ function App() {
   //   )
 
   //Ahora vamos a ponerle algo de localstorage
-  const [board, setBoard] = useState( () => {
+  const [board, setBoard] = useState(() => {
     const boardFromStorage = window.localStorage.getItem('board')
-    return boardFromStorage ? JSON.parse(boardFromStorage) : 
-    Array(9).fill(null)
+    return boardFromStorage ? JSON.parse(boardFromStorage) :
+      Array(9).fill(null)
   })
 
   const [turn, setTurns] = useState(() => {
@@ -27,11 +27,11 @@ function App() {
     return turnFromStorage ?? Turns.X
   })
   // const [ turn, setTurns] = useState(Turns.X)
-  
-  // null es que no hay ganador, false es que hay un empate
- 
 
-  
+  // null es que no hay ganador, false es que hay un empate
+
+
+
 
   const resetGame = () => {
     setBoard(Array(9).fill(null))
@@ -43,12 +43,12 @@ function App() {
   }
 
   const updateBoard = (index) => {
-    
+
     //esta linea verifica que el board no tenga nada 
-    if(board[index] || winner) return
+    if (board[index] || winner) return
     //actualizar el tablero
     const newBoard = [...board]
-    newBoard[index] =turn
+    newBoard[index] = turn
     setBoard(newBoard)
     //cambiar turno
     const newTurn = turn === Turns.X ? Turns.O : Turns.X
@@ -56,14 +56,14 @@ function App() {
     //
     window.localStorage.setItem('board', JSON.stringify(newBoard))
     window.localStorage.setItem('turn', newTurn)
-   // verificar si hay un ganador
-   const newWinner = chechWinner(newBoard)
-   if(newWinner){
-    confetti()
-    setWinner(newWinner)
-  }else if (checkEndGame(newBoard)){
-    setWinner(false)
-  }
+    // verificar si hay un ganador
+    const newWinner = chechWinner(newBoard)
+    if (newWinner) {
+      confetti()
+      setWinner(newWinner)
+    } else if (checkEndGame(newBoard)) {
+      setWinner(false)
+    }
   }
 
   //uso e implementacion de useEffect
@@ -75,19 +75,19 @@ function App() {
     <main className='board'>
       <h1>Juego de Tic Tak Toc</h1>
       <button onClick={resetGame} >Reiniciar Juego</button>
-      <section className='game'> 
+      <section className='game'>
         {
           board.map((bo, index) => {
             return (
-               <Square 
-               key={index}
-               index={index}
-               updateBoard={updateBoard}
-               >
+              <Square
+                key={index}
+                index={index}
+                updateBoard={updateBoard}
+              >
                 {board[index]}
-               </Square>
-              )
-            })
+              </Square>
+            )
+          })
         }
       </section>
       <section className='turn'>
